@@ -4,6 +4,8 @@ import bcrypt from "bcryptjs"
 import { sql } from "./db"
 
 export const authOptions: NextAuthOptions = {
+  // Explicitly set the secret (fallback to a default for development)
+  secret: process.env.NEXTAUTH_SECRET || "fallback-secret-for-development-only",
   providers: [
     CredentialsProvider({
       name: "credentials",
@@ -67,4 +69,5 @@ export const authOptions: NextAuthOptions = {
       return session
     },
   },
+  debug: process.env.NODE_ENV === "development",
 }
