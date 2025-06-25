@@ -14,7 +14,7 @@ export default function AdminLoginPage() {
   const urlError = searchParams.get("error")
   const [credentials, setCredentials] = useState({
     email: "admin@innovensky.com",
-    password: "admin123", // Set back to correct password for testing
+    password: "admin123",
   })
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState(urlError ?? "")
