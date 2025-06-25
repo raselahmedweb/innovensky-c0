@@ -4,8 +4,7 @@ import bcrypt from "bcryptjs"
 import { sql } from "./db"
 
 export const authOptions: NextAuthOptions = {
-  // Explicitly set the secret (fallback to a default for development)
-  secret: process.env.NEXTAUTH_SECRET || "fallback-secret-for-development-only",
+  secret: process.env.NEXTAUTH_SECRET,
   providers: [
     CredentialsProvider({
       name: "credentials",
@@ -15,26 +14,34 @@ export const authOptions: NextAuthOptions = {
       },
       async authorize(credentials) {
         if (!credentials?.email || !credentials?.password) {
+          console.log("Missing credentials")
           return null
         }
 
         try {
+          console.log("Attempting to authenticate:", credentials.email)
+
           const users = await sql`
             SELECT * FROM users WHERE email = ${credentials.email}
           `
 
           const user = users[0]
+          console.log("User found:", !!user)
 
           if (!user) {
+            console.log("No user found with email:", credentials.email)
             return null
           }
 
           const isPasswordValid = await bcrypt.compare(credentials.password, user.password)
+          console.log("Password valid:", isPasswordValid)
 
           if (!isPasswordValid) {
+            console.log("Invalid password for user:", credentials.email)
             return null
           }
 
+          console.log("Authentication successful for:", credentials.email)
           return {
             id: user.id.toString(),
             email: user.email,
