@@ -9,7 +9,6 @@ const inter = Inter({ subsets: ["latin"] })
 export const metadata: Metadata = {
   title: "Innovensky Software - Modern IT Solutions",
   description: "Empowering businesses through modern web, mobile, and digital solutions.",
-    generator: 'v0.dev'
 }
 
 export default function RootLayout({
